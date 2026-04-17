@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- LEDGER HOLDINGS v5 - Cherry first -->
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -6,7 +7,9 @@
   <title>Ledger Holdings LLC</title>
   <meta name="description" content="Ledger Holdings LLC — Private Holdings, Selective Commerce, Discreet Stewardship. California."/>
   <meta name="robots" content="noindex, nofollow"/>
+  <base href="https://ledgerholdingsllc.github.io/ledgerholdingsllc.com/"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -23,7 +26,7 @@
 
     body {
       font-family: 'Montserrat', sans-serif;
-      background: #0a0a0a;
+      background: #1a0f12;
     }
 
     /* ── Slideshow ── */
@@ -54,12 +57,6 @@
       opacity: 0;
       transform: scale(1.12);
     }
-
-    .slide-1 { background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=90&fit=crop'); }
-    .slide-2 { background-image: url('https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=1920&q=90&fit=crop'); }
-    .slide-3 { background-image: url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=90&fit=crop'); }
-    .slide-4 { background-image: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=90&fit=crop'); }
-    .slide-5 { background-image: url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1920&q=90&fit=crop'); }
 
     /* ── Overlays ── */
     .overlay-vignette {
@@ -288,11 +285,11 @@
 
   <!-- Slideshow -->
   <div class="slideshow">
-    <div class="slide slide-1 active"></div>
-    <div class="slide slide-2"></div>
-    <div class="slide slide-3"></div>
-    <div class="slide slide-4"></div>
-    <div class="slide slide-5"></div>
+    <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=1920&q=90&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1920&q=90&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=90&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=90&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=90&fit=crop')"></div>
   </div>
 
   <div class="overlay-vignette"></div>
@@ -398,7 +395,18 @@
       startTimer();
     });
 
-    startTimer();
+    // Preload all images
+    const urls = [
+      'https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=1920&q=90&fit=crop',
+      'https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1920&q=90&fit=crop',
+      'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=90&fit=crop',
+      'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=90&fit=crop',
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=90&fit=crop'
+    ];
+    urls.forEach(url => { const img = new Image(); img.src = url; });
+
+    // Wait 4 seconds on first slide before starting rotation
+    setTimeout(startTimer, 4000);
 
     // ── Email builder (bypass Cloudflare obfuscation) ──
     (function(){
