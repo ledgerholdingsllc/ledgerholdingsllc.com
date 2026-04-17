@@ -1,1 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ledger Holdings LLC</title>
+  <meta name="description" content="Ledger Holdings LLC — Private Holdings, Selective Commerce, Discreet Stewardship. California."/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
+    :root {
+      --gold: #c8b88a;
+      --gold-dark: #8a7650;
+      --cream: #f0ece4;
+      --transition-duration: 6s;
+      --slide-duration: 10s;
+    }
+
+    html, body { width:100%; height:100%; overflow:hidden; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0a0a0a;
+    }
+
+    /* ── Slideshow ── */
+    .slideshow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.0);
+      transition:
+        opacity var(--transition-duration) ease-in-out,
+        transform calc(var(--slide-duration) + var(--transition-duration)) ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+
+    .slide.leaving {
+      opacity: 0;
+      transform: scale(1.12);
+    }
+
+    .slide-1 { background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=90&fit=crop'); }
+    .slide-2 { background-image: url('https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=1920&q=90&fit=crop'); }
+    .slide-3 { background-image: url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=90&fit=crop'); }
+    .slide-4 { background-image: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1920&q=90&fit=crop'); }
+    .slide-5 { background-image: url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?w=1920&q=90&fit=crop'); }
+
+    /* ── Overlays ── */
+    .overlay-vignette {
+      position: fixed; inset:0; z-index:1;
+      background: radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.42) 100%);
+    }
+    .overlay-gradient {
+      position: fixed; inset:0; z-index:2;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.32) 0%,
+        rgba(0,0,0,0.06) 35%,
+        rgba(0,0,0,0.06) 60%,
+        rgba(0,0,0,0.58) 100%
+      );
+    }
+
+    /* ── Page layout ── */
+    .page {
+      position: fixed; inset:0; z-index:3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 42px 56px 38px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── Slide indicators ── */
+    .indicators {
+      position: fixed;
+      bottom: 38px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(200,184,138,0.35);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--gold);
+      width: 18px;
+      border-radius: 3px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 0.5px solid rgba(200,184,138,0.22);
+      padding-bottom: 22px;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 17px;
+      letter-spacing: 0.22em;
+      color: #ffffff;
+      white-space: nowrap;
+      text-shadow: 0 1px 16px rgba(0,0,0,0.9), 0 2px 32px rgba(0,0,0,0.7);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-rule-top {
+      width: 0.5px; height: 52px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+      margin: 0 auto 28px;
+    }
+
+    .tagline-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    .tagline-word {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 1px 16px rgba(0,0,0,0.9), 0 2px 32px rgba(0,0,0,0.65);
+      white-space: nowrap;
+    }
+
+    .tagline-sep {
+      width: 30px; height: 0.5px;
+      background: var(--gold);
+      opacity: 0.7;
+      margin: 0 16px;
+      flex-shrink: 0;
+    }
+
+    .hero-rule-bottom {
+      width: 0.5px; height: 52px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      margin: 28px auto 0;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 0.5px solid rgba(200,184,138,0.18);
+      padding-top: 20px;
+      gap: 12px;
+    }
+
+    .contact-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 7.5px;
+      letter-spacing: 0.24em;
+      color: var(--gold);
+      text-transform: uppercase;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+      margin-bottom: 5px;
+    }
+
+    .contact-val {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(240,232,210,0.88);
+      text-shadow: 0 1px 12px rgba(0,0,0,0.7);
+    }
+
+    .contact-val a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-val a:hover { color: var(--gold); }
+
+    .footer-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .footer-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.75);
+      text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+      white-space: nowrap;
+    }
+
+    .footer-copy {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 8px;
+      letter-spacing: 0.10em;
+      color: rgba(255,255,255,0.50);
+      text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+      white-space: nowrap;
+      margin-top: 3px;
+    }
+
+    .photo-credit {
+      font-size: 7px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.18);
+      margin-top: 3px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .page { padding: 30px 26px 28px; }
+      .logo-name { font-size: 13px; letter-spacing: 0.16em; }
+      .tagline-word { font-size: 9px; letter-spacing: 0.18em; }
+      .tagline-sep { width: 18px; margin: 0 10px; }
+      .footer-name, .footer-copy { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .tagline-group { flex-direction: column; gap: 12px; }
+      .tagline-sep { width: 24px; height: 0.5px; margin: 0 auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slide { transition: opacity 0.5s ease; transform: none !important; }
+      .page { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <div class="slide slide-1 active"></div>
+    <div class="slide slide-2"></div>
+    <div class="slide slide-3"></div>
+    <div class="slide slide-4"></div>
+    <div class="slide slide-5"></div>
+  </div>
+
+  <div class="overlay-vignette"></div>
+  <div class="overlay-gradient"></div>
+
+  <!-- Slide indicators -->
+  <div class="indicators">
+    <div class="dot active" onclick="goTo(0)"></div>
+    <div class="dot" onclick="goTo(1)"></div>
+    <div class="dot" onclick="goTo(2)"></div>
+    <div class="dot" onclick="goTo(3)"></div>
+    <div class="dot" onclick="goTo(4)"></div>
+  </div>
+
+  <main class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-group">
+        <svg width="32" height="32" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+          <line x1="8" y1="36" x2="22" y2="8" stroke="#f0ece4" stroke-width="2" stroke-linecap="round"/>
+          <line x1="22" y1="8" x2="36" y2="36" stroke="#c8b88a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="36" x2="36" y2="36" stroke="#f0ece4" stroke-width="0.75" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-name">LEDGER HOLDINGS LLC</div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-rule-top"></div>
+      <div class="tagline-group">
+        <span class="tagline-word">Private Holdings</span>
+        <div class="tagline-sep"></div>
+        <span class="tagline-word">Selective Commerce</span>
+        <div class="tagline-sep"></div>
+        <span class="tagline-word">Discreet Stewardship</span>
+      </div>
+      <div class="hero-rule-bottom"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div>
+        <div class="contact-label">Contact</div>
+        <div class="contact-val" id="emailDisplay">
+          info&#64;ledgerholdingsllc.com
+        </div>
+        <div class="photo-credit">Photos: Unsplash &mdash; free commercial license</div>
+      </div>
+
+      <div style="flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" opacity="0.4">
+          <line x1="8" y1="36" x2="22" y2="8" stroke="#c8b88a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="22" y1="8" x2="36" y2="36" stroke="#a09070" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="36" x2="36" y2="36" stroke="#c8b88a" stroke-width="0.75" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-name">LEDGER HOLDINGS LLC</div>
+        <div class="footer-copy">&copy; 2026 &nbsp; ALL RIGHTS RESERVED</div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // ── Slideshow engine ──
+    const slides = document.querySelectorAll('.slide');
+    const dots   = document.querySelectorAll('.dot');
+    let current  = 0;
+    let timer    = null;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      slides[current].classList.add('leaving');
+      dots[current].classList.remove('active');
+
+      const prev = current;
+      setTimeout(() => {
+        slides[prev].classList.remove('leaving');
+      }, 6000);
+
+      current = index;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function next() {
+      goTo((current + 1) % slides.length);
+    }
+
+    function startTimer() {
+      timer = setInterval(next, 7000);
+    }
+
+    // Pause on hover
+    document.querySelector('.slideshow').addEventListener('mouseenter', () => {
+      clearInterval(timer);
+    });
+    document.querySelector('.slideshow').addEventListener('mouseleave', () => {
+      startTimer();
+    });
+
+    startTimer();
+
+    // ── Email builder (bypass Cloudflare obfuscation) ──
+    (function(){
+      var u = 'info', d = 'ledgerholdingsllc.com';
+      var el = document.getElementById('emailDisplay');
+      if (el) {
+        var a = document.createElement('a');
+        a.href = 'mailto:' + u + '@' + d;
+        a.textContent = u + '@' + d;
+        a.style.color = 'inherit';
+        a.style.textDecoration = 'none';
+        el.innerHTML = '';
+        el.appendChild(a);
+      }
+    })();
+  </script>
+
+</body>
+</html>
